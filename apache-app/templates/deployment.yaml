@@ -11,6 +11,8 @@ spec:
     metadata:
       labels:
         app: apache-multi
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
     spec:
       serviceAccountName: {{ .Values.serviceAccount.name }}
       containers:
@@ -19,9 +21,9 @@ spec:
           ports:
             - containerPort: {{ .Values.services.service1.port }}
           volumeMounts:
-            - name: {{ .Values.volumeMounts.service1.name }}
-              mountPath: {{ .Values.volumeMounts.service1.mountPath }}
-              subPath: {{ .Values.volumeMounts.service1.subPath }}
+            - name: apache-config
+              mountPath: /var/www/html/index.html
+              subPath: service1.html
           livenessProbe:
             httpGet:
               path: {{ .Values.livenessProbe.service1.path }}
@@ -49,9 +51,9 @@ spec:
           ports:
             - containerPort: {{ .Values.services.service2.port }}
           volumeMounts:
-            - name: {{ .Values.volumeMounts.service2.name }}
-              mountPath: {{ .Values.volumeMounts.service2.mountPath }}
-              subPath: {{ .Values.volumeMounts.service2.subPath }}
+            - name: apache-config
+              mountPath: /var/www/html/index.html
+              subPath: service2.html
           livenessProbe:
             httpGet:
               path: {{ .Values.livenessProbe.service2.path }}
@@ -75,7 +77,7 @@ spec:
               memory: {{ .Values.resources.requests.memory }}
 
       volumes:
-        - name: {{ .Values.volumes.config.name }}
+        - name: apache-config
           configMap:
-            name: {{ .Values.volumes.config.configMapName }}
+            name: apache-map
  

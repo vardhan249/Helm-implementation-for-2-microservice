@@ -7,6 +7,13 @@ image:
 serviceAccount:
   name: apache-multi-sa
 
+
+configMap:
+  service1Content: |
+    This is Service A v1
+  service2Content: |
+    This is Service B v1
+
 services:
   type: NodePort
   service1:

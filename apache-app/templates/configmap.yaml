@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: apache-map
+  labels:
+    app: apache-multi
+data:
+  service1.html: |
+    {{ .Values.configMap.service1Content | nindent 4 }}
+  service2.html: |
+    {{ .Values.configMap.service2Content | nindent 4 }}
+ 
