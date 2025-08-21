@@ -1,0 +1,81 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: apache-multi-deployment
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: apache-multi
+  template:
+    metadata:
+      labels:
+        app: apache-multi
+    spec:
+      serviceAccountName: {{ .Values.serviceAccount.name }}
+      containers:
+        - name: apache-service1
+          image: {{ .Values.image.service1 }}
+          ports:
+            - containerPort: {{ .Values.services.service1.port }}
+          volumeMounts:
+            - name: {{ .Values.volumeMounts.service1.name }}
+              mountPath: {{ .Values.volumeMounts.service1.mountPath }}
+              subPath: {{ .Values.volumeMounts.service1.subPath }}
+          livenessProbe:
+            httpGet:
+              path: {{ .Values.livenessProbe.service1.path }}
+              port: {{ .Values.livenessProbe.service1.port }}
+            initialDelaySeconds: {{ .Values.livenessProbe.service1.initialDelaySeconds }}
+            periodSeconds: {{ .Values.livenessProbe.service1.periodSeconds }}
+            failureThreshold: {{ .Values.livenessProbe.service1.failureThreshold }}
+          readinessProbe:
+            httpGet:
+              path: {{ .Values.readinessProbe.service1.path }}
+              port: {{ .Values.readinessProbe.service1.port }}
+            initialDelaySeconds: {{ .Values.readinessProbe.service1.initialDelaySeconds }}
+            periodSeconds: {{ .Values.readinessProbe.service1.periodSeconds }}
+            failureThreshold: {{ .Values.readinessProbe.service1.failureThreshold }}
+          resources:
+            limits:
+              cpu: {{ .Values.resources.limits.cpu }}
+              memory: {{ .Values.resources.limits.memory }}
+            requests:
+              cpu: {{ .Values.resources.requests.cpu }}
+              memory: {{ .Values.resources.requests.memory }}
+
+        - name: apache-service2
+          image: {{ .Values.image.service2 }}
+          ports:
+            - containerPort: {{ .Values.services.service2.port }}
+          volumeMounts:
+            - name: {{ .Values.volumeMounts.service2.name }}
+              mountPath: {{ .Values.volumeMounts.service2.mountPath }}
+              subPath: {{ .Values.volumeMounts.service2.subPath }}
+          livenessProbe:
+            httpGet:
+              path: {{ .Values.livenessProbe.service2.path }}
+              port: {{ .Values.livenessProbe.service2.port }}
+            initialDelaySeconds: {{ .Values.livenessProbe.service2.initialDelaySeconds }}
+            periodSeconds: {{ .Values.livenessProbe.service2.periodSeconds }}
+            failureThreshold: {{ .Values.livenessProbe.service2.failureThreshold }}
+          readinessProbe:
+            httpGet:
+              path: {{ .Values.readinessProbe.service2.path }}
+              port: {{ .Values.readinessProbe.service2.port }}
+            initialDelaySeconds: {{ .Values.readinessProbe.service2.initialDelaySeconds }}
+            periodSeconds: {{ .Values.readinessProbe.service2.periodSeconds }}
+            failureThreshold: {{ .Values.readinessProbe.service2.failureThreshold }}
+          resources:
+            limits:
+              cpu: {{ .Values.resources.limits.cpu }}
+              memory: {{ .Values.resources.limits.memory }}
+            requests:
+              cpu: {{ .Values.resources.requests.cpu }}
+              memory: {{ .Values.resources.requests.memory }}
+
+      volumes:
+        - name: {{ .Values.volumes.config.name }}
+          configMap:
+            name: {{ .Values.volumes.config.configMapName }}
+ 

@@ -1,0 +1,80 @@
+replicaCount: 1
+
+image:
+  service1: vardhan911/webapp-service-a:v1
+  service2: vardhan911/webapp-service-b:v1
+
+serviceAccount:
+  name: apache-multi-sa
+
+services:
+  type: NodePort
+  service1:
+    port: 81
+    targetPort: 81
+    nodePort: 30081
+  service2:
+    port: 82
+    targetPort: 82
+    nodePort: 30082
+
+volumes:
+  config:
+    name: apache-config
+    configMapName: apache-multi-config
+
+volumeMounts:
+  service1:
+    name: apache-config
+    mountPath: /var/www/html/index.html
+    subPath: service1.html
+  service2:
+    name: apache-config
+    mountPath: /var/www/html/index.html
+    subPath: service2.html
+
+livenessProbe:
+  service1:
+    path: /
+    port: 81
+    initialDelaySeconds: 5
+    periodSeconds: 10
+    failureThreshold: 3
+  service2:
+    path: /
+    port: 82
+    initialDelaySeconds: 5
+    periodSeconds: 10
+    failureThreshold: 3
+
+readinessProbe:
+  service1:
+    path: /
+    port: 81
+    initialDelaySeconds: 3
+    periodSeconds: 5
+    failureThreshold: 3
+  service2:
+    path: /
+    port: 82
+    initialDelaySeconds: 3
+    periodSeconds: 5
+    failureThreshold: 3
+
+resources:
+  limits:
+    cpu: 200m
+    memory: 256Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi
+
+pdb:
+  minAvailable: 1
+
+hpa:
+  minReplicas: 1
+  maxReplicas: 5
+  targetCPUUtilizationPercentage: 80
+  targetMemoryUtilizationPercentage: 80
+ 
