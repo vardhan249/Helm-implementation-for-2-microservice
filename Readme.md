@@ -37,25 +37,31 @@ A single Helm chart that can deploy multiple microservices by changing configmap
     sudo k3s kubectl patch deployment metrics-server -n kube-system   --type='json' -p='[{"op":"add","path":"/spec/template/spec/containers/0/args/-","value":"--kubelet-insecure-tls"}]'
     ```
 4. Install Helm Chart
-    ```sh
+    ```
     cd apache-app
+    ```
+    ```
     sudo helm install apache-test .
     ```
+    ```
+    export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
+    ```
+
     This will create the deployment as well as nodeport service on nodeport `30081` and `30082` configurable in values.yaml.
     
 5. Upgrade the Helm Chart by changing the configmap
     ```sh
-    sudo helm upgrade apache-test apache-app/ --set configMap.service1Content="Service A Updated to v2" --set configMap.service2Content="Service B Updated to v2"
+    helm upgrade apache-test apache-app/ --set configMap.service1Content="Service A Updated to v2" --set configMap.service2Content="Service B Updated to v2"
     ```
  
 6. Rollback to the older version   
     ```
-    sudo helm rollback apache-test
+    helm rollback apache-test
     ```
 7. Check Helm history
 
     ```
-    sudo helm history apache-test
+    helm history apache-test
     ```
 
 8. Check the status of the HPA
