@@ -1,6 +1,6 @@
 # Reusable Helm Chart for Microservices
 
-A single Helm chart that can deploy multiple microservices by changing configmap values.
+A single Helm chart that can deploy multiple microservices by changing configmap values. This implementation is for local installation.
 
 ## System Dependency Installation(K3s + Helm)
 
