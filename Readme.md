@@ -12,7 +12,7 @@ A single Helm chart that can deploy multiple microservices by changing configmap
 2. Installation of K3's and Helm
     
     ```
-    cd Helm-implementation-for-2-microservice && chmod +x install.sh
+    chmod +x install.sh
     ```
     ```
     ./install.sh
@@ -28,12 +28,15 @@ A single Helm chart that can deploy multiple microservices by changing configmap
     ```sh
     helm install apache-test apache-app/
     ```
+    ![Helm Install](./image/Helm_install.png)
+
     This will create the deployment as well as nodeport service on nodeport `30081` and `30082` configurable in values.yaml.
 
 2. Upgrade the Helm Chart by changing the configmap
     ```sh
     helm upgrade apache-test apache-app/ --set configMap.service1Content="Service A Updated to v2" --set configMap.service2Content="Service B Updated to v2"
     ```
+    ![Helm Upgrade](./image/Helm_upgrade.png)
  
 3. Rollback to the older version   
     ```sh
@@ -44,11 +47,13 @@ A single Helm chart that can deploy multiple microservices by changing configmap
     ```sh
     helm history apache-test
     ```
+    ![Helm History](./image/Helm_history.png)
 
 8. Check the status of the HPA
     ```sh
     sudo k3s kubectl get hpa
     ```
+    ![HPA](./image/HPA.png)
 
 ## Accessing the Application
 
@@ -69,3 +74,5 @@ curl http://<Node IP>:30081/
 ```sh
 curl http://<Node IP>:30082/
 ```
+
+    ![Application Running](./image/App_running.png)
