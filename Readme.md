@@ -4,15 +4,7 @@ A single Helm chart that can deploy multiple microservices by changing configmap
 
 ## Directory Structure
 
-apache-app
-├── Chart.yaml
-├── templates
-│   ├── deployment.yaml
-│   ├── hpa.yaml
-│   ├── pdb.yaml
-│   ├── serviceaccount.yaml
-│   └── service.yaml
-└── values.yaml
+![Helm Directory Tree](./image/Tree.png)
 
 ## Steps for running the project
 1. Clone the repo
