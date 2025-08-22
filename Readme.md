@@ -75,4 +75,4 @@ curl http://<Node IP>:30081/
 curl http://<Node IP>:30082/
 ```
 
-    ![Application Running](./image/App_running.png)
+![Application Running](./image/App_running.png)
