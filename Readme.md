@@ -29,6 +29,9 @@ A single Helm chart that can deploy multiple microservices by changing configmap
     ```
     ./get_helm.sh
     ```
+    ```
+    export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
+    ```
 3. Install metrics server on the cluster and disable TLS connection
     ```sh
     sudo k3s kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.
@@ -42,9 +45,6 @@ A single Helm chart that can deploy multiple microservices by changing configmap
     ```
     ```
     sudo helm install apache-test .
-    ```
-    ```
-    export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
     ```
 
     This will create the deployment as well as nodeport service on nodeport `30081` and `30082` configurable in values.yaml.
