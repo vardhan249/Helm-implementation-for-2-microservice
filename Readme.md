@@ -2,11 +2,8 @@
 
 A single Helm chart that can deploy multiple microservices by changing configmap values.
 
-## Directory Structure
+## System Dependency Installation(K3s + Helm)
 
-![Helm Directory Tree](./image/Tree.png)
-
-## Steps for running the project
 1. Clone the repo
     ```sh
     git clone https://github.com/vardhan249/Helm-implementation-for-2-microservice.git
@@ -15,52 +12,36 @@ A single Helm chart that can deploy multiple microservices by changing configmap
 2. Installation of K3's and Helm
     
     ```
-    curl -sfL https://get.k3s.io | sh -
+    cd Helm-implementation-for-2-microservice && chmod +x install.sh
     ```
     ```
-    sudo k3s kubectl get nodes
+    ./install.sh
     ```
-    ```
-    curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
-    ```
-    ```
-    chmod 700 get_helm.sh
-    ```
-    ```
-    ./get_helm.sh
-    ```
-    ```
-    export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
-    ```
-3. Install metrics server on the cluster and disable TLS connection
-    ```sh
-    sudo k3s kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.
-    ```
-    ```sh
-    sudo k3s kubectl patch deployment metrics-server -n kube-system   --type='json' -p='[{"op":"add","path":"/spec/template/spec/containers/0/args/-","value":"--kubelet-insecure-tls"}]'
-    ```
-4. Install Helm Chart
-    ```
-    cd apache-app
-    ```
-    ```
-    sudo helm install apache-test .
-    ```
+ 
+## Directory Structure
 
+![Helm Directory Tree](./image/Tree.png)
+
+## Steps for running the project
+
+1.  Install Helm Chart
+    ```sh
+    helm install apache-test apache-app/
+    ```
     This will create the deployment as well as nodeport service on nodeport `30081` and `30082` configurable in values.yaml.
-    
-5. Upgrade the Helm Chart by changing the configmap
+
+2. Upgrade the Helm Chart by changing the configmap
     ```sh
     helm upgrade apache-test apache-app/ --set configMap.service1Content="Service A Updated to v2" --set configMap.service2Content="Service B Updated to v2"
     ```
  
-6. Rollback to the older version   
-    ```
+3. Rollback to the older version   
+    ```sh
     helm rollback apache-test
     ```
-7. Check Helm history
+4. Check Helm history
 
-    ```
+    ```sh
     helm history apache-test
     ```
 
@@ -68,3 +49,23 @@ A single Helm chart that can deploy multiple microservices by changing configmap
     ```sh
     sudo k3s kubectl get hpa
     ```
+
+## Accessing the Application
+
+```sh
+http://Node IP>:30081/
+```
+    
+```sh
+http://Node IP:30082/
+```
+
+This can be accessed by curl also using 
+
+```sh
+curl http://<Node IP>:30081/
+```
+
+```sh
+curl http://<Node IP>:30082/
+```
